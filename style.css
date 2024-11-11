@@ -1,0 +1,57 @@
+body {
+    font-family: Kanit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #f0f2f5;
+}
+.container {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+}
+.word {
+    font-size: 3rem;
+    margin: 2rem 0;
+    color: #2196F3;
+    min-height: 5rem;
+}
+.timer {
+    font-size: 2rem;
+    margin: 1rem 0;
+    color: #f44336;
+}
+button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin: 0.5rem;
+
+    font-family: Kanit;
+}
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+.score {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+    color: #4CAF50;
+}
+.game-over {
+    display: none;
+    font-size: 2rem;
+    color: #f44336;
+    margin: 1rem 0;
+}
