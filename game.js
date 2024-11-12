@@ -45,7 +45,7 @@ const words = [
   "กล้วยไม้ผลิบานงดงาม",
   "ประทัดดังสนั่นในงานวัด",
   "ครกหินบดพริกในครัว",
-  "กรุงเทพฯ เมืองหลวงของไทย",
+  "กรุงเทพ เมืองหลวงของไทย",
   "ปรบมือให้กับผู้ชนะ",
   "พระปรางค์วัดอรุณสว่างไสว",
 ];
@@ -56,13 +56,15 @@ let timeLeft = 15;
 let timerInterval;
 let recognition = null;
 
+// เตรียมเสียงตอบถูก
+const correctSound = new Audio('./sound/correct.mp3');
+
+// ดึง element คำที่ต้องพูด
 const wordElement = document.getElementById("word");
 const timerElement = document.getElementById("timer");
-const scoreElement = document.getElementById("score");
 const startButton = document.getElementById("startButton");
-const gameOverElement = document.getElementById("gameOver");
-const finalScoreElement = document.getElementById("finalScore");
 
+// ฟังก์ชันเริ่มต้นสำหรับ Speech Recognition
 function initSpeechRecognition() {
   if ("webkitSpeechRecognition" in window) {
     recognition = new webkitSpeechRecognition();
@@ -72,11 +74,20 @@ function initSpeechRecognition() {
 
     recognition.onresult = function (event) {
       const spokenWord = event.results[0][0].transcript.trim();
+      console.log(`User said: ${spokenWord}`);
       if (spokenWord === currentWord) {
+        // เล่นเสียงตอบถูก
+        correctSound.play();
+        
         score++;
-        scoreElement.textContent = `คะแนน: ${score}`;
         resetTimer();
         selectNewWord();
+      } else {
+        Swal.fire({
+          title: "พูดไม่ตรง",
+          text: `คุณพูดว่า: "${spokenWord}" ลองอีกครั้ง`,
+          icon: "error",
+        });
       }
     };
 
@@ -85,33 +96,37 @@ function initSpeechRecognition() {
         recognition.start();
       }
     };
+  } else {
+    Swal.fire({
+      title: "ไม่รองรับ",
+      text: "เบราว์เซอร์ของคุณไม่รองรับ Speech Recognition",
+      icon: "error",
+    });
   }
 }
 
+// ฟังก์ชันสำหรับเลือกคำใหม่
 function selectNewWord() {
-  const newWord = words[Math.floor(Math.random() * words.length)];
-  currentWord = newWord;
-  wordElement.textContent = newWord;
+  currentWord = words[Math.floor(Math.random() * words.length)];
+  wordElement.textContent = `พูดคำว่า: "${currentWord}"`; // แสดงคำที่ต้องพูด
 }
 
+// ฟังก์ชันเริ่มเกม
 function startGame() {
   score = 0;
   timeLeft = 15;
-  scoreElement.textContent = `คะแนน: ${score}`;
   timerElement.textContent = timeLeft;
-  gameOverElement.style.display = "none";
   startButton.disabled = true;
-
   selectNewWord();
   startTimer();
+
   if (!recognition) {
     initSpeechRecognition();
   }
-  if (recognition) {
-    recognition.start();
-  }
+  recognition.start();
 }
 
+// ฟังก์ชันสำหรับเริ่มตัวจับเวลา
 function startTimer() {
   if (timerInterval) {
     clearInterval(timerInterval);
@@ -119,34 +134,32 @@ function startTimer() {
   timerInterval = setInterval(function () {
     timeLeft--;
     timerElement.textContent = timeLeft;
-
     if (timeLeft <= 0) {
       endGame();
     }
   }, 1000);
 }
 
+// ฟังก์ชันสำหรับรีเซ็ตเวลา
 function resetTimer() {
   timeLeft = 15;
   timerElement.textContent = timeLeft;
 }
 
+// ฟังก์ชันเมื่อจบเกม
 function endGame() {
   clearInterval(timerInterval);
   if (recognition) {
     recognition.stop();
   }
-  wordElement.textContent = "";
-  timerElement.textContent = "0";
-  gameOverElement.style.display = "block";
-  finalScoreElement.textContent = score;
-  startButton.disabled = false;
-
   Swal.fire({
-    title: "Game Over",
-    text: `คะแนน: ${score}`,
-    icon: "error",
+    title: "จบเกม!",
+    text: `คะแนนที่คุณได้คือ: ${score}`,
+    icon: "success",
   });
+  startButton.disabled = false;
+  wordElement.textContent = "สวัสดี"; // รีเซ็ตคำที่ต้องพูดเมื่อจบเกม
 }
 
+// กดปุ่มเริ่มเกม
 startButton.addEventListener("click", startGame);
