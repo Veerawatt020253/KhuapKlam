@@ -52,7 +52,7 @@ const words = [
 
 let currentWord = "";
 let score = 0;
-let timeLeft = 10;
+let timeLeft = 15;
 let timerInterval;
 let recognition = null;
 
@@ -96,7 +96,7 @@ function selectNewWord() {
 
 function startGame() {
   score = 0;
-  timeLeft = 10;
+  timeLeft = 15;
   scoreElement.textContent = `คะแนน: ${score}`;
   timerElement.textContent = timeLeft;
   gameOverElement.style.display = "none";
@@ -127,7 +127,7 @@ function startTimer() {
 }
 
 function resetTimer() {
-  timeLeft = 10;
+  timeLeft = 15;
   timerElement.textContent = timeLeft;
 }
 
