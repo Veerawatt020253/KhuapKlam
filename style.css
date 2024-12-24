@@ -4,7 +4,9 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    min-height: 110dvh;
+    width: 101dvw;
+    overflow: hidden;
     margin: 0;
     background: #f0f2f5;
     background-image: linear-gradient(#f0f2f5, #d87a59);
@@ -58,17 +60,61 @@ button:disabled {
 }
 .text-box {
     background-color: white;
-    padding-top: 2%;
-    padding-bottom: 1%;
-    padding-left: 3%;
-    padding-right: 3%;
+    padding: 15px 25px 15px 25px;
     border-radius: 14px;
     box-shadow: 0px 0px 3px  black;
     color: black;
+}
+
+
+.text-box-s {
+    background-color: #198754;
+    padding: 15px 25px 15px 25px;
+    border-radius: 14px;
+    color: white;
+    border: none;
+}
+
+.text-box-r {
+    background-color: red;
+    padding: 15px 25px 15px 25px;
+    border-radius: 14px;
+    color: white;
+    border: none;
+}
+
+.text-box-s:hover{
+    background-color: #147045;
+}
+
+.text-box-s:disabled{    
+    background-color: #1b955c;
+    box-shadow: 0px 0px 3px  black;
 }
 
 .messge-text {
     background-color: white;
     border: 2px solid black;
     border-radius: 15px;
+    font-size: 2vh;
+}
+
+.fs-large{
+    font-size: 4vh;
+}
+
+.titlec{
+    position: fixed;
+    top: 50px;
+    width: 100%;
+}
+
+.charimg{
+    width: 26vh;
+}
+
+.bubbletext{
+    font-size: 2.5vh;
+    padding: 0;
+    margin: 0;
 }

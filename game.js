@@ -81,7 +81,7 @@ const words = [
   "กรอบรูปวาดพระบรมฉายาลักษณ์",
   "กระป๋องน้ำสีแดง",
   "ขลุ่ยไม้แกะสลัก",
-  "ปราสาทโบราณอายุหลายร้อยปี",
+  // "ปราสาทโบราณอายุหลายร้อยปี",
   "กรณีศึกษาสำคัญในประวัติศาสตร์",
   "ปราณีตในการปักผ้า",
   "กระแสน้ำพัดแรง",
@@ -96,12 +96,13 @@ let timerInterval;
 let recognition = null;
 
 // เตรียมเสียงตอบถูก
-const correctSound = new Audio('./sound/correct.mp3');
+const correctSound = document.getElementById("correctsound");
 
 // ดึง element คำที่ต้องพูด
 const wordElement = document.getElementById("word");
 const timerElement = document.getElementById("timer");
 const startButton = document.getElementById("startButton");
+const textButton = document.getElementById("textButton")
 
 // ฟังก์ชันเริ่มต้นสำหรับ Speech Recognition
 function initSpeechRecognition() {
@@ -114,10 +115,11 @@ function initSpeechRecognition() {
     recognition.onresult = function (event) {
       const spokenWord = event.results[0][0].transcript.trim();
       console.log(`User said: ${spokenWord}`);
+
       if (spokenWord === currentWord) {
         // เล่นเสียงตอบถูก
         correctSound.play();
-        
+
         score++;
         resetTimer();
         selectNewWord();
@@ -133,6 +135,8 @@ function initSpeechRecognition() {
     recognition.onend = function () {
       if (timeLeft > 0) {
         recognition.start();
+
+        // startButton.addEventListener("click", endGame);
       }
     };
   } else {
@@ -152,10 +156,24 @@ function selectNewWord() {
 
 // ฟังก์ชันเริ่มเกม
 function startGame() {
+  // If click button again
+  if (textButton.textContent === "หยุด") {
+    startButton.classList.add("text-box-s")
+    startButton.classList.remove("text-box-r")
+    recognition.stop();
+    endGame()
+    return
+  }
+
   score = 0;
   timeLeft = 15;
   timerElement.textContent = timeLeft;
-  startButton.disabled = true;
+  // startButton.disabled = true;
+  textButton.textContent = "หยุด"
+  startButton.classList.add("text-box-r")
+  startButton.classList.remove("text-box-s")
+  // textButton.className = ".text-c-r";
+
   selectNewWord();
   startTimer();
 
@@ -187,10 +205,12 @@ function resetTimer() {
 
 // ฟังก์ชันเมื่อจบเกม
 function endGame() {
+  resetTimer()
   clearInterval(timerInterval);
   if (recognition) {
     recognition.stop();
   }
+  textButton.textContent = "เริ่มอีกครั้ง";
   Swal.fire({
     title: "จบเกม!",
     text: `คะแนนที่คุณได้คือ: ${score}`,
